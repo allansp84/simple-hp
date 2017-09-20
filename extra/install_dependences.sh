@@ -3,18 +3,17 @@
 export DISPLAY=localhost:0
 export MPLBACKEND="agg"
 
-CUDA_PATH=/usr/local/cuda
+apt-get update && apt-get install -y  build-essential freeglut3-dev libxmu-dev libxi-dev \
+    libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev libzmq-dev \
+    libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev
 
+CUDA_PATH=/usr/local/cuda
 INSTALLED_PACKAGES=/root/local
 INSTALLED_PACKAGES_DOWNLOAD_FOLDER=$INSTALLED_PACKAGES/downloads
 MONGODB_VERSION=2.2.7
 MONGODB_INSTALLATION_FOLDER=$INSTALLED_PACKAGES/mongodb-$MONGODB_VERSION
 MONGODB_PKG=mongodb-linux-x86_64-$MONGODB_VERSION
 MONGODB_FILENAME=$MONGODB_PKG.tgz
-
-apt-get update && apt-get install -y  build-essential freeglut3-dev libxmu-dev libxi-dev \
-    libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev libzmq-dev \
-    libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev
 
 mkdir -p $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
 cd $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
@@ -29,10 +28,10 @@ cd $HOME
 
 pip install cython==0.23
 pip install numpy==1.10
+pip install scipy==0.15.1
 pip install matplotlib==1.5.3
 pip install scikit-image==0.11.2
 pip install scikit-learn==0.16.1
-pip install scipy==0.15.1
 
 # -- installing requirements in virtual environment
 pip install ipython==5.5.0
