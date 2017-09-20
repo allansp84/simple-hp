@@ -26,12 +26,8 @@ echo export PATH='$'PATH:$MONGODB_INSTALLATION_FOLDER/bin >> /etc/profile
 CURRENT_DIR=$(pwd)
 cd $HOME
 
-# -- setuptools 0.7 is bugged, use 0.6 instead
 pip install setuptools==0.6rc11
 pip install distribute==0.6.38
-#wget -O /tmp/setuptools-0.6c11-py2.7.egg https://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
-#sh /tmp/setuptools-0.6c11-py2.7.egg
-
 pip install ipython==3.0.0
 pip install argparse
 pip install SQLAlchemy
