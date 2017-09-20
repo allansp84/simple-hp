@@ -42,7 +42,7 @@ sh /tmp/setuptools-0.6c11-py2.7.egg
 
 pip install Pillow==2.4.0
 pip install pyzmq
-pip install bson
+pip install bson==0.4.8
 pip install pymongo
 pip install networkx
 pip install six
