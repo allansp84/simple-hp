@@ -32,7 +32,7 @@ pip install distribute==0.6.38
 #wget -O /tmp/setuptools-0.6c11-py2.7.egg https://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
 #sh /tmp/setuptools-0.6c11-py2.7.egg
 
-pip install ipython==5.5.0
+pip install ipython==3.0.0
 pip install argparse
 pip install SQLAlchemy
 pip install sphinx
