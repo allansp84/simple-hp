@@ -86,6 +86,7 @@ git clone https://github.com/jaberg/pyautodiff.git
 (cd pyautodiff && nosetests)
 
 # -- installing hyperopt-convnet
+rm -rf hyperopt-convnet
 git clone https://github.com/allansp84/hyperopt-convnet.git
 (cd hyperopt-convnet && python setup.py develop)
 
