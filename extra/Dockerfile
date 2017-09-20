@@ -3,10 +3,7 @@ MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY="localhost:0" MPLBACKEND="agg"
 
-# RUN \
-#     echo 'export DISPLAY=localhost:0' >> .bashrc && \
-#     echo 'export MPLBACKEND="agg"' >> .bashrc
-
+# -- step 1:
 RUN \
     apt-get update && \
     apt-get install -y \
@@ -17,6 +14,7 @@ RUN \
     pip install -U pip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# -- step 2:
 RUN \
     mkdir -p $HOME/dev/downloads && \
     cd $HOME/dev/downloads && \
@@ -27,6 +25,7 @@ RUN \
     cd /root && \
     rm -rf $HOME/dev/downloads
 
+# -- step 3:
 RUN \
     pip install setuptools==0.6rc11 && \
     pip install distribute==0.6.38 && \
@@ -51,12 +50,11 @@ RUN \
     pip install scikit-image==0.11.2 && \
     pip install scikit-learn==0.16.1 && \
     pip install theano==0.6.0 && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
-
-RUN \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
     echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
     echo "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
 
+# -- step 4:
 RUN \
     mkdir -p $HOME/dev/hp-pkgs && \
     cd $HOME/dev/hp-pkgs && \
@@ -64,16 +62,18 @@ RUN \
     (cd hyperopt && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# -- step 5:
 RUN \
-    mkdir -p $HOME/dev/hp-pkgs && \
+    cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/jaberg/pyautodiff.git && \
     (cd pyautodiff && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# -- step 6:
 RUN \
-    mkdir -p $HOME/dev/hp-pkgs && \
-    rm -rf hyperopt-convnet && \
+    cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/allansp84/hyperopt-convnet.git && \
+    (cd hyperopt-convnet && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 WORKDIR /root
