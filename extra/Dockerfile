@@ -12,6 +12,7 @@ RUN \
         libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
     apt-get autoclean && apt-get clean && \
     pip install -U pip && \
+    ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 2:
@@ -43,7 +44,7 @@ RUN \
     pip install networkx && \
     pip install six && \
     pip install coverage && \
-    pip install cython==0.23 && \
+    pip install cython==0.25 && \
     pip install numpy==1.10 && \
     pip install scipy==0.15.1 && \
     pip install matplotlib==1.5.3 && \
