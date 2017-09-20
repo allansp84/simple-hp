@@ -26,7 +26,11 @@ echo export PATH='$'PATH:$MONGODB_INSTALLATION_FOLDER/bin >> /etc/profile
 CURRENT_DIR=$(pwd)
 cd $HOME
 
-# -- installing requirements in virtual environment
+# -- setuptools 0.7 is bugged, use 0.6 instead
+pip install setuptools==0.6rc11
+#wget -O /tmp/setuptools-0.6c11-py2.7.egg https://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
+#sh /tmp/setuptools-0.6c11-py2.7.egg
+
 pip install ipython==5.5.0
 pip install argparse
 pip install SQLAlchemy
@@ -34,11 +38,6 @@ pip install sphinx
 pip install nose
 pip install nose-parameterized
 pip install parameterized
-
-# -- setuptools 0.7 is bugged, use 0.6 instead
-pip install setuptools==0.6rc11
-#wget -O /tmp/setuptools-0.6c11-py2.7.egg https://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
-#sh /tmp/setuptools-0.6c11-py2.7.egg
 
 pip install Pillow==2.4.0
 pip install pyzmq
