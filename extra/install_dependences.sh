@@ -55,9 +55,7 @@ pip install scikit-image==0.11.2
 pip install scikit-learn==0.16.1
 
 # -- install theano
-pip install theano
-
-source ./.bashrc
+pip install theano==0.6.0
 
 # set .theanorc -- you change cpu by gpu if you have one
 echo "[cuda]
@@ -67,8 +65,8 @@ root=$CUDA_PATH
 floatX=float32
 device=cpu" > .theanorc
 
-# -- run theano tests
-python -c 'import theano as th; th.test()'
+# # -- run theano tests
+# python -c 'import theano as th; th.test()'
 
 echo "You shold have obtained 19 (known) failures. If that is the case, press [enter] and go ahead..."
 
