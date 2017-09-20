@@ -42,7 +42,7 @@ pip install setuptools==0.6rc11
 
 pip install Pillow==2.4.0
 pip install pyzmq
-pip install bson==0.4.8
+pip install bson==0.4.1
 pip install pymongo
 pip install networkx
 pip install six
