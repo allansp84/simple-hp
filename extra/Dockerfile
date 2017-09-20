@@ -52,6 +52,7 @@ RUN \
     pip install pbr==1.8.0 && \
     pip install theano==0.6.0 && \
     pip install cffi==1.7 && \
+    pip install cryptography==1.1.2 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
     echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
     echo "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
