@@ -1,99 +1,50 @@
-FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
-MAINTAINER Allan Pinto <allansp84@gmail.com>
+# Start with cuDNN base image
+FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu14.04
+MAINTAINER Kai Arulkumaran <design@kaixhin.com>
 
-ENV DISPLAY="localhost:0" MPLBACKEND="agg" GPUARRAY_FORCE_CUDA_DRIVER_LOAD=1
+# Install git, wget, python-dev, pip, BLAS + LAPACK and other dependencies
+RUN apt-get update && apt-get install -y \
+  gfortran \
+  git \
+  wget \
+  liblapack-dev \
+  libopenblas-dev \
+  python-dev \
+  python-pip \
+  python-nose \
+  python-numpy \
+  python-scipy
 
-# -- step 1:
-RUN \
-    apt-get update && \
-    apt-get install -y \
-        build-essential wget git libxmu-dev libxi-dev libzmq-dev \
-        freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
-        libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
-    apt-get autoclean && apt-get clean && \
-    pip install -U pip && \
-    ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+# Set CUDA_ROOT
+ENV CUDA_ROOT /usr/local/cuda/bin
 
-# -- step 2:
-RUN \
-    mkdir -p $HOME/dev/downloads && \
-    cd $HOME/dev/downloads && \
-    wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
-    tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
-    cp -R -n mongodb-linux-x86_64-2.2.7/ $HOME/dev/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:$HOME/dev/mongodb-2.2.7/bin >> /etc/profile && \
-    cd /root && \
-    rm -rf $HOME/dev/downloads
+# Install CMake 3
+RUN cd /root && wget http://www.cmake.org/files/v3.8/cmake-3.8.1.tar.gz && \
+  tar -xf cmake-3.8.1.tar.gz && cd cmake-3.8.1 && \
+  ./configure && \
+  make -j "$(nproc)" && \
+  make install
 
-# -- step 3:
-RUN \
-    pip install setuptools==0.6rc11 && \
-    pip install distribute==0.6.38 && \
-    pip install ipython==3.0.0 && \
-    pip install argparse && \
-    pip install SQLAlchemy && \
-    pip install sphinx && \
-    pip install nose && \
-    pip install nose-parameterized && \
-    pip install parameterized && \
-    pip install Pillow==2.4.0 && \
-    pip install pyzmq && \
-    pip install bson==0.4.1 && \
-    pip install pymongo && \
-    pip install networkx && \
-    pip install six && \
-    pip install coverage && \
-    pip install cython==0.25 && \
-    pip install numpy==1.10 && \
-    pip install scipy==0.15.1 && \
-    pip install matplotlib==1.5.3 && \
-    pip install scikit-image==0.11.2 && \
-    pip install scikit-learn==0.16.1 && \
-    pip install pbr==1.8.0 && \
-    pip install theano==0.6.0 && \
-    pip install cffi==1.7 && \
-    pip install cryptography==2.0.3 && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
-    echo "[blas]\nldflags = -lopenblas\n" > ~/.theanorc && \
-    echo "[cuda]\nroot=/usr/local/cuda\n" >> .theanorc && \
-    echo "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
+# Install Cython
+RUN pip install Cython
 
-RUN \
-    mkdir -p $HOME/dev/hp-pkgs && \
-    git clone https://github.com/Theano/libgpuarray.git && \
-    mkdir -p $HOME/libgpuarray/build && \
-    cd $HOME/libgpuarray/build && \
-    cmake .. -DCMAKE_BUILD_TYPE=Release && \
-    make && make install && \
-    ldconfig && \
-    cd $HOME/libgpuarray && \
-    python setup.py build && python setup.py install
+# Clone libgpuarray repo and move into it
+RUN cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
+# Make and move into build directory
+  mkdir Build && cd Build && \
+# CMake
+  cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
+# Make
+  make -j"$(nproc)" && \
+  make install
+# Install pygpu
+RUN cd /root/libgpuarray && \
+  python setup.py build_ext -L /usr/lib -I /usr/include && \
+  python setup.py install
 
-# -- step 4:
-RUN \
-    cd $HOME/dev/hp-pkgs && \
-    git clone https://github.com/hyperopt/hyperopt.git && \
-    (cd hyperopt && python setup.py develop) && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
-
-# -- step 5:
-RUN \
-    cd $HOME/dev/hp-pkgs && \
-    git clone https://github.com/jaberg/pyautodiff.git && \
-    (cd pyautodiff && python setup.py develop) && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
-
-# -- step 6:
-RUN \
-    cd $HOME/dev/hp-pkgs && \
-    git clone https://github.com/allansp84/hyperopt-convnet.git && \
-    (cd hyperopt-convnet && python setup.py develop) && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
-
-RUN \
-    cd $HOME/dev && \
-    git clone https://github.com/allansp84/simple-hp.git && \
-    (cd simple-hp && python setup.py develop)
-
-WORKDIR /root
+# Install bleeding-edge Theano
+RUN pip install --upgrade pip
+RUN pip install --upgrade six
+RUN pip install --upgrade --no-deps git+git://github.com/Theano/Theano.git
+# Set up .theanorc for CUDA
+RUN echo "[global]\ndevice=cuda\nfloatX=float32\noptimizer_including=cudnn\n[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" > /root/.theanorc
