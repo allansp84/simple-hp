@@ -46,12 +46,9 @@ RUN \
     pip install scikit-learn==0.16.1 && \
     pip install theano==0.6.0
 
-RUN echo "[cuda]
-root=/usr/local/cuda
-
-[global]
-floatX=float32
-device=cpu" > .theanorc
+RUN \
+    echo -e "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
+    echo -e "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
 
 RUN python -c 'import theano as th; th.test()' && \
     echo "You shold have obtained 19 (known) failures. If that is the case, press [enter] and go ahead..."
