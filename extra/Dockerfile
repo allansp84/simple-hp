@@ -1,7 +1,7 @@
 FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
-ENV DISPLAY localhost:0 MPLBACKEND "agg"
+ENV DISPLAY="localhost:0" MPLBACKEND="agg"
 
 # RUN \
 #     echo 'export DISPLAY=localhost:0' >> .bashrc && \
