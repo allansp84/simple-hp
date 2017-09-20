@@ -49,6 +49,7 @@ RUN \
     pip install matplotlib==1.5.3 && \
     pip install scikit-image==0.11.2 && \
     pip install scikit-learn==0.16.1 && \
+    pip install pbr==1.8.0 && \
     pip install theano==0.6.0 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
     echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
