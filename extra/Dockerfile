@@ -59,9 +59,17 @@ RUN \
     echo "[cuda]\nroot=/usr/local/cuda\n" >> .theanorc && \
     echo "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
 
-# -- step 4:
 RUN \
     mkdir -p $HOME/dev/hp-pkgs && \
+    git clone https://github.com/Theano/libgpuarray.git && \
+    mkdir -p libgpuarray/build && \
+    cd libgpuarray/build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    make && make install && \
+    ldconfig
+
+# -- step 4:
+RUN \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/hyperopt/hyperopt.git && \
     (cd hyperopt && python setup.py develop) && \
