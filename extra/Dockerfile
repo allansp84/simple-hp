@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-devel-ubuntu16.04
+FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY localhost:0
