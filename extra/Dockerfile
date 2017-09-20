@@ -62,13 +62,13 @@ RUN \
 RUN \
     mkdir -p $HOME/dev/hp-pkgs && \
     git clone https://github.com/Theano/libgpuarray.git && \
-    mkdir -p libgpuarray/build && \
-    cd libgpuarray/build && \
+    mkdir -p $HOME/libgpuarray/build && \
+    cd $HOME/libgpuarray/build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make && make install && \
     ldconfig && \
-    python setup.py build && \
-    python setup.py install
+    cd $HOME/libgpuarray && \
+    python setup.py build && python setup.py install
 
 # -- step 4:
 RUN \
