@@ -9,9 +9,14 @@ ENV MPLBACKEND "agg"
 #     echo 'export MPLBACKEND="agg"' >> .bashrc
 
 RUN \
-    apt-get update && apt-get install -y  build-essential wget git libxmu-dev libxi-dev libzmq-dev \
-    freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
-    libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev
+    apt-get update && \
+    apt-get install -y \
+        build-essential wget git libxmu-dev libxi-dev libzmq-dev \
+        freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
+        libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
+    apt-get autoclean && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
 
 RUN \
     mkdir -p /root/local/downloads && \
@@ -19,7 +24,9 @@ RUN \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
     cp -R -n mongodb-linux-x86_64-2.2.7/ /root/local/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:/root/local/mongodb-2.2.7/bin >> /etc/profile
+    echo export PATH='$'PATH:/root/local/mongodb-2.2.7/bin >> /etc/profile && \
+    cd /root && \
+    rm -rf /root/local/downloads
 
 RUN \
     pip install setuptools==0.6rc11 && \
@@ -44,28 +51,27 @@ RUN \
     pip install matplotlib==1.5.3 && \
     pip install scikit-image==0.11.2 && \
     pip install scikit-learn==0.16.1 && \
-    pip install theano==0.6.0
+    pip install theano==0.6.0 && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
     echo -e "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
     echo -e "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
-
-RUN python -c 'import theano as th; th.test()' && \
-    echo "You shold have obtained 19 (known) failures. If that is the case, press [enter] and go ahead..."
 
 RUN \
     mkdir -p $HOME/dev/hp-pkgs && \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/hyperopt/hyperopt.git && \
     (cd hyperopt && python setup.py develop) && \
-    (cd hyperopt && nosetests) && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
     git clone https://github.com/jaberg/pyautodiff.git && \
     (cd pyautodiff && python setup.py develop) && \
-    (cd pyautodiff && nosetests)
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
     rm -rf hyperopt-convnet && \
     git clone https://github.com/allansp84/hyperopt-convnet.git && \
-    (cd hyperopt-convnet && python setup.py develop)
+    cd /root && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
