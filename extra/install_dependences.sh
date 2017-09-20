@@ -26,13 +26,6 @@ echo export PATH='$'PATH:$MONGODB_INSTALLATION_FOLDER/bin >> /etc/profile
 CURRENT_DIR=$(pwd)
 cd $HOME
 
-pip install cython==0.23
-pip install numpy==1.10
-pip install scipy==0.15.1
-pip install matplotlib==1.5.3
-pip install scikit-image==0.11.2
-pip install scikit-learn==0.16.1
-
 # -- installing requirements in virtual environment
 pip install ipython==5.5.0
 pip install argparse
@@ -55,6 +48,12 @@ pip install networkx
 pip install six
 pip install coverage
 
+pip install cython==0.23
+pip install numpy==1.10
+pip install scipy==0.15.1
+pip install matplotlib==1.5.3
+pip install scikit-image==0.11.2
+pip install scikit-learn==0.16.1
 
 # -- install theano
 pip install theano
