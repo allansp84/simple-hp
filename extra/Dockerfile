@@ -14,6 +14,7 @@ RUN \
         freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
         libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
     apt-get autoclean && apt-get clean && \
+    pip install -U pip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
