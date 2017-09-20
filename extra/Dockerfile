@@ -1,8 +1,7 @@
 FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
-ENV DISPLAY localhost:0
-ENV MPLBACKEND "agg"
+ENV DISPLAY localhost:0 MPLBACKEND "agg"
 
 # RUN \
 #     echo 'export DISPLAY=localhost:0' >> .bashrc && \
@@ -54,8 +53,8 @@ RUN \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
-    echo -e "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
-    echo -e "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
+    echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
+    echo "[global]\nfloatX=float32\ndevice=cpu" >> .theanorc
 
 RUN \
     mkdir -p $HOME/dev/hp-pkgs && \
