@@ -28,6 +28,7 @@ cd $HOME
 
 # -- setuptools 0.7 is bugged, use 0.6 instead
 pip install setuptools==0.6rc11
+pip install distribute==0.6.38
 #wget -O /tmp/setuptools-0.6c11-py2.7.egg https://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
 #sh /tmp/setuptools-0.6c11-py2.7.egg
 
