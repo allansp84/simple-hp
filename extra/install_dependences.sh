@@ -50,6 +50,7 @@ pip install scipy==0.15.1
 pip install matplotlib==1.5.3
 pip install scikit-image==0.11.2
 pip install scikit-learn==0.16.1
+pip install pbr==1.8.0
 
 # -- install theano
 pip install theano==0.6.0
