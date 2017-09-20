@@ -66,7 +66,9 @@ RUN \
     cd libgpuarray/build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make && make install && \
-    ldconfig
+    ldconfig && \
+    python setup.py build && \
+    python setup.py install
 
 # -- step 4:
 RUN \
