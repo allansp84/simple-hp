@@ -14,12 +14,11 @@ MONGODB_FILENAME=$MONGODB_PKG.tgz
 
 apt-get update && apt-get install -y  build-essential freeglut3-dev libxmu-dev libxi-dev \
     libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev libzmq-dev \
-    libjpeg-dev python-dev python-pip gfortran77 python-tk libffi-dev libsodium-dev libssl-dev
+    libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev
 
 mkdir -p $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
 cd $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
 
-# -- get tar file
 wget http://fastdl.mongodb.org/linux/$MONGODB_FILENAME
 tar -zxvf $MONGODB_FILENAME
 cp -R -n $MONGODB_PKG/ $MONGODB_INSTALLATION_FOLDER
