@@ -17,16 +17,15 @@ RUN \
     apt-get autoclean && apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
-
 RUN \
-    mkdir -p /root/local/downloads && \
-    cd /root/local/downloads && \
+    mkdir -p $HOME/dev/downloads && \
+    cd $HOME/dev/downloads && \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
-    cp -R -n mongodb-linux-x86_64-2.2.7/ /root/local/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:/root/local/mongodb-2.2.7/bin >> /etc/profile && \
+    cp -R -n mongodb-linux-x86_64-2.2.7/ $HOME/dev/mongodb-2.2.7  && \
+    echo export PATH='$'PATH:$HOME/dev/mongodb-2.2.7/bin >> /etc/profile && \
     cd /root && \
-    rm -rf /root/local/downloads
+    rm -rf $HOME/dev/downloads
 
 RUN \
     pip install setuptools==0.6rc11 && \
@@ -66,12 +65,15 @@ RUN \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
+    mkdir -p $HOME/dev/hp-pkgs && \
     git clone https://github.com/jaberg/pyautodiff.git && \
     (cd pyautodiff && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 RUN \
+    mkdir -p $HOME/dev/hp-pkgs && \
     rm -rf hyperopt-convnet && \
     git clone https://github.com/allansp84/hyperopt-convnet.git && \
-    cd /root && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
+WORKDIR /root
