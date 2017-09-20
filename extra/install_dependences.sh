@@ -12,10 +12,9 @@ MONGODB_INSTALLATION_FOLDER=$INSTALLED_PACKAGES/mongodb-$MONGODB_VERSION
 MONGODB_PKG=mongodb-linux-x86_64-$MONGODB_VERSION
 MONGODB_FILENAME=$MONGODB_PKG.tgz
 
-apt-get install -y freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx \
-                   libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
-                   libzmq-dev libjpeg-dev python-dev python-pip gfortran77 build-essential \
-                   python-tk libffi-dev libsodium-dev libssl-dev
+apt-get update && apt-get install -y  build-essential freeglut3-dev libxmu-dev libxi-dev \
+    libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev libzmq-dev \
+    libjpeg-dev python-dev python-pip gfortran77 python-tk libffi-dev libsodium-dev libssl-dev
 
 mkdir -p $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
 cd $INSTALLED_PACKAGES_DOWNLOAD_FOLDER
