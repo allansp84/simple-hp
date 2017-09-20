@@ -1,7 +1,7 @@
 FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
-ENV DISPLAY="localhost:0" MPLBACKEND="agg" LD_LIBRARY_PATH=/usr/local/lib
+ENV DISPLAY="localhost:0" MPLBACKEND="agg" GPUARRAY_FORCE_CUDA_DRIVER_LOAD=1
 
 # -- step 1:
 RUN \
