@@ -19,7 +19,7 @@ RUN \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
     cp -R -n mongodb-linux-x86_64-2.2.7/ /root/local/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:/root/local/mongodb-2.2.7/bin >> /etc/profile  && \
+    echo export PATH='$'PATH:/root/local/mongodb-2.2.7/bin >> /etc/profile
 
 RUN \
     pip install setuptools==0.6rc11 && \
