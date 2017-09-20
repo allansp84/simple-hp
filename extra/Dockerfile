@@ -10,7 +10,7 @@ ENV MPLBACKEND "agg"
 
 RUN \
     apt-get update && apt-get install -y  build-essential wget git libxmu-dev libxi-dev libzmq-dev \
-    freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev\
+    freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
     libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev
 
 RUN \
