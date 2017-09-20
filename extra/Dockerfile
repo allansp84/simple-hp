@@ -79,4 +79,9 @@ RUN \
     (cd hyperopt-convnet && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+RUN \
+    cd $HOME/dev && \
+    git clone https://github.com/allansp84/simple-hp.git && \
+    (cd simple-hp && python setup.py develop)
+
 WORKDIR /root
