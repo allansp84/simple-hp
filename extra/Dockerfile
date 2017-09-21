@@ -33,7 +33,6 @@ RUN \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
     cp -R -n mongodb-linux-x86_64-2.2.7/ /root/dev/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:/root/dev/mongodb-2.2.7/bin >> /etc/profile && \
     cd /root && \
     rm -rf /root/dev/downloads
 
