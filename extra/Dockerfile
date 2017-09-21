@@ -25,25 +25,28 @@ RUN \
 
 # -- step 2: install mongodb
 RUN \
-    mkdir -p $HOME/dev/downloads && \
-    cd $HOME/dev/downloads && \
+    mkdir -p /root/dev/downloads && \
+    cd /root/dev/downloads && \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
-    cp -R -n mongodb-linux-x86_64-2.2.7/ $HOME/dev/mongodb-2.2.7  && \
-    echo export PATH='$'PATH:$HOME/dev/mongodb-2.2.7/bin >> /etc/profile && \
+    cp -R -n mongodb-linux-x86_64-2.2.7/ /root/dev/mongodb-2.2.7  && \
+    echo export PATH='$'PATH:/root/dev/mongodb-2.2.7/bin >> /etc/profile && \
     cd /root && \
-    rm -rf $HOME/dev/downloads
+    rm -rf /root/dev/downloads
 
 # -- step 3: install libgpuarray
 RUN \
     pip install cython==0.25 && \
-    cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
-    mkdir Build && cd Build && \
+    cd /root/dev && \
+    git clone https://github.com/Theano/libgpuarray.git && \
+    mkdir -p /root/dev/libgpuarray/release && \
+    cd /root/dev/libgpuarray/release && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
     make -j"$(nproc)" && make install && \
-    cd /root/libgpuarray && \
+    cd /root/dev/libgpuarray && \
     python setup.py build_ext -L /usr/lib -I /usr/include && \
-    python setup.py install
+    python setup.py install && \
+    rm -rf /root/dev/libgpuarray
 
 # -- step 4: install python dependences
 RUN \
@@ -72,11 +75,11 @@ RUN \
     pip install theano==0.6.0 && \
     pip install cffi==1.7 && \
     pip install cryptography==2.0.3 && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
-    echo "[blas]\nldflags=-lopenblas\n" > .theanorc && \
-    echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
-    echo "[global]\nfloatX=float32\ndevice=cpu\n" > .theanorc && \
-    echo "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" >> .theanorc
+    echo "[blas]\nldflags=-lopenblas\n" > /root/.theanorc && \
+    echo "[cuda]\nroot=/usr/local/cuda\n" > /root/.theanorc && \
+    echo "[global]\nfloatX=float32\ndevice=cpu\n" > /root/.theanorc && \
+    echo "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" >> /root/.theanorc && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 5: install hyperopt package
 RUN \
