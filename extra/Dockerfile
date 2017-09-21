@@ -3,7 +3,7 @@ MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY="localhost:0" MPLBACKEND="agg" CUDA_ROOT=/usr/local/cuda/bin
 
-# -- step 1:
+# -- step 1: install dependences
 RUN \
     apt-get update && \
     apt-get install -y \
@@ -23,7 +23,7 @@ RUN \
     ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
-# -- step 2:
+# -- step 2: install mongodb
 RUN \
     mkdir -p $HOME/dev/downloads && \
     cd $HOME/dev/downloads && \
@@ -34,6 +34,7 @@ RUN \
     cd /root && \
     rm -rf $HOME/dev/downloads
 
+# -- step 3: install mongodb
 RUN \
     cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
     mkdir Build && cd Build && \
@@ -43,7 +44,7 @@ RUN \
     python setup.py build_ext -L /usr/lib -I /usr/include && \
     python setup.py install
 
-# -- step 3:
+# -- step 4: install python dependences
 RUN \
     pip install setuptools==0.6rc11 && \
     pip install distribute==0.6.38 && \
@@ -77,27 +78,28 @@ RUN \
         "[global]\nfloatX=float32\ndevice=cpu\n" \
         "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" > .theanorc
 
-# -- step 4:
+# -- step 5: install hyperopt package
 RUN \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/hyperopt/hyperopt.git && \
     (cd hyperopt && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
-# -- step 5:
+# -- step 5: install pyautodiff package
 RUN \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/jaberg/pyautodiff.git && \
     (cd pyautodiff && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
-# -- step 6:
+# -- step 6: install hyperopt-convnet package
 RUN \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/allansp84/hyperopt-convnet.git && \
     (cd hyperopt-convnet && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# -- step 7: install simple-hp package
 RUN \
     cd $HOME/dev && \
     git clone https://github.com/allansp84/simple-hp.git && \
