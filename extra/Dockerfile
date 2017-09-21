@@ -1,4 +1,4 @@
-FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
+FROM nvidia/cuda:8.0-devel-ubuntu16.04
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY="localhost:0" MPLBACKEND="agg" CUDA_ROOT=/usr/local/cuda/bin
