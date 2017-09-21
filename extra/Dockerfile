@@ -36,31 +36,31 @@ RUN \
 
 # -- step 4: install python dependences
 RUN \
-    pip --no-cache-dir install setuptools==0.6rc11 && \
-    pip --no-cache-dir install distribute==0.6.38 && \
-    pip --no-cache-dir install cython==0.25 && \
-    pip --no-cache-dir install ipython==3.0.0 && \
-    pip --no-cache-dir install argparse && \
-    pip --no-cache-dir install SQLAlchemy && \
-    pip --no-cache-dir install sphinx && \
-    pip --no-cache-dir install nose && \
-    pip --no-cache-dir install nose-parameterized && \
-    pip --no-cache-dir install parameterized && \
-    pip --no-cache-dir install Pillow==2.4.0 && \
-    pip --no-cache-dir install pyzmq && \
-    pip --no-cache-dir install bson==0.4.1 && \
-    pip --no-cache-dir install pymongo && \
-    pip --no-cache-dir install networkx && \
-    pip --no-cache-dir install six && \
-    pip --no-cache-dir install coverage && \
-    pip --no-cache-dir install numpy==1.10 && \
-    pip --no-cache-dir install scipy==0.15.1 && \
-    pip --no-cache-dir install matplotlib==1.5.3 && \
-    pip --no-cache-dir install scikit-image==0.11.2 && \
-    pip --no-cache-dir install scikit-learn==0.16.1 && \
-    pip --no-cache-dir install pbr==1.8.0 && \
-    pip --no-cache-dir install cffi==1.7 && \
-    pip --no-cache-dir install cryptography==2.0.3 && \
+    pip install setuptools==0.6rc11 && \
+    pip install distribute==0.6.38 && \
+    pip install cython==0.25 && \
+    pip install ipython==3.0.0 && \
+    pip install argparse && \
+    pip install SQLAlchemy && \
+    pip install sphinx && \
+    pip install nose && \
+    pip install nose-parameterized && \
+    pip install parameterized && \
+    pip install Pillow==2.4.0 && \
+    pip install pyzmq && \
+    pip install bson==0.4.1 && \
+    pip install pymongo && \
+    pip install networkx && \
+    pip install six && \
+    pip install coverage && \
+    pip install numpy==1.10 && \
+    pip install scipy==0.15.1 && \
+    pip install matplotlib==1.5.3 && \
+    pip install scikit-image==0.11.2 && \
+    pip install scikit-learn==0.16.1 && \
+    pip install pbr==1.8.0 && \
+    pip install cffi==1.7 && \
+    pip install cryptography==2.0.3 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 3: install libgpuarray
