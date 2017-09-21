@@ -80,6 +80,7 @@ RUN \
 
 # -- step 5: install hyperopt package
 RUN \
+    mkdir -p $HOME/dev/hp-pkgs && \
     cd $HOME/dev/hp-pkgs && \
     git clone https://github.com/hyperopt/hyperopt.git && \
     (cd hyperopt && python setup.py develop) && \
