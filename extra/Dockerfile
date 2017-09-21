@@ -17,7 +17,8 @@ RUN \
         libxi-dev \
         libzmq-dev \
         freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
-        libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
+        libjpeg-dev python-dev python-pip python-tk \
+        libssl-dev && \
     apt-get autoclean && apt-get clean && \
     pip install -U pip && \
     ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
