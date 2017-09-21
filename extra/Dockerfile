@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu14.04
+FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY="localhost:0" MPLBACKEND="agg" CUDA_ROOT=/usr/local/cuda/bin
@@ -17,8 +17,7 @@ RUN \
         libxi-dev \
         libzmq-dev \
         freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
-        libjpeg-dev python-dev python-pip python-tk \
-        libssl-dev && \
+        libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
     apt-get autoclean && apt-get clean && \
     pip install -U pip && \
     ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
@@ -62,22 +61,22 @@ RUN apt-get update && apt-get install -y \
   python-scipy
 
 RUN cd /root && wget http://www.cmake.org/files/v3.8/cmake-3.8.1.tar.gz && \
-  tar -xf cmake-3.8.1.tar.gz && cd cmake-3.8.1 && \
-  ./configure && \
-  make -j "$(nproc)" && \
-  make install
-
-RUN pip install Cython=0.25
+    tar -xf cmake-3.8.1.tar.gz && cd cmake-3.8.1 && \
+    ./configure && make -j "$(nproc)" && make install
 
 RUN \
-    cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
-    mkdir Build && cd Build && \
+    pip install cython==0.25 && \
+    cd /root && \
+    git clone https://github.com/Theano/libgpuarray.git && \
+    mkdir -p /root/libgpuarray/release && \
+    cd /root/libgpuarray/release && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
     make -j"$(nproc)" && make install
 
-RUN cd /root/libgpuarray && \
-  python setup.py build_ext -L /usr/lib -I /usr/include && \
-  python setup.py install
+RUN \
+    cd /root/libgpuarray && \
+    python setup.py build_ext -L /usr/lib -I /usr/include && \
+    python setup.py install
 
 # -- step 4: install python dependences
 RUN \
