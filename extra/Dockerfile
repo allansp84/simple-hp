@@ -1,4 +1,4 @@
-FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
+FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu14.04
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
 ENV DISPLAY="localhost:0" MPLBACKEND="agg" CUDA_ROOT=/usr/local/cuda/bin
@@ -34,18 +34,49 @@ RUN \
     cd /root && \
     rm -rf /root/dev/downloads
 
-# -- step 3: install libgpuarray
+# # -- step 3: install libgpuarray
+# RUN \
+#     pip install cython==0.25 && \
+#     cd /root/dev && \
+#     git clone https://github.com/Theano/libgpuarray.git && \
+#     mkdir -p /root/dev/libgpuarray/release && \
+#     cd /root/dev/libgpuarray/release && \
+#     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
+#     make -j"$(nproc)" && make install && \
+#     cd /root/dev/libgpuarray && \
+#     python setup.py build_ext -L /usr/lib -I /usr/include && \
+#     python setup.py install
+
+# Install git, wget, python-dev, pip, BLAS + LAPACK and other dependencies
+RUN apt-get update && apt-get install -y \
+  gfortran \
+  git \
+  wget \
+  liblapack-dev \
+  libopenblas-dev \
+  python-dev \
+  python-pip \
+  python-nose \
+  python-numpy \
+  python-scipy
+
+RUN cd /root && wget http://www.cmake.org/files/v3.8/cmake-3.8.1.tar.gz && \
+  tar -xf cmake-3.8.1.tar.gz && cd cmake-3.8.1 && \
+  ./configure && \
+  make -j "$(nproc)" && \
+  make install
+
+RUN pip install Cython=0.25
+
 RUN \
-    pip install cython==0.25 && \
-    cd /root/dev && \
-    git clone https://github.com/Theano/libgpuarray.git && \
-    mkdir -p /root/dev/libgpuarray/release && \
-    cd /root/dev/libgpuarray/release && \
+    cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
+    mkdir Build && cd Build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
-    make -j"$(nproc)" && make install && \
-    cd /root/dev/libgpuarray && \
-    python setup.py build_ext -L /usr/lib -I /usr/include && \
-    python setup.py install
+    make -j"$(nproc)" && make install
+
+RUN cd /root/libgpuarray && \
+  python setup.py build_ext -L /usr/lib -I /usr/include && \
+  python setup.py install
 
 # -- step 4: install python dependences
 RUN \
