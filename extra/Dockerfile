@@ -1,7 +1,10 @@
 FROM allansp84/ubuntu16.04-cuda8.0-opencv3.2
 MAINTAINER Allan Pinto <allansp84@gmail.com>
 
-ENV DISPLAY="localhost:0" MPLBACKEND="agg" CUDA_ROOT=/usr/local/cuda/bin
+ENV DISPLAY="localhost:0" \
+    MPLBACKEND="agg" \
+    CUDA_ROOT=/usr/local/cuda/bin \
+    PATH=$PATH:/root/dev/mongodb-2.2.7/bin
 
 # -- step 1: install dependences
 RUN \
