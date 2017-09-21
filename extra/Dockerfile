@@ -76,8 +76,8 @@ RUN \
     pip install cffi==1.7 && \
     pip install cryptography==2.0.3 && \
     echo "[blas]\nldflags=-lopenblas\n" > /root/.theanorc && \
-    echo "[cuda]\nroot=/usr/local/cuda\n" > /root/.theanorc && \
-    echo "[global]\nfloatX=float32\ndevice=cpu\n" > /root/.theanorc && \
+    echo "[cuda]\nroot=/usr/local/cuda\n" >> /root/.theanorc && \
+    echo "[global]\nfloatX=float32\ndevice=cuda\n" >> /root/.theanorc && \
     echo "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" >> /root/.theanorc && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
