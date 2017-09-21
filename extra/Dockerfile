@@ -18,8 +18,8 @@ RUN \
         libzmq-dev \
         freeglut3-dev libgl1-mesa-glx libgl1-mesa-dri libglapi-mesa libglu1-mesa libglu1-mesa-dev \
         libjpeg-dev python-dev python-pip python-tk libffi-dev libsodium-dev libssl-dev && \
-    apt-get autoclean && apt-get clean && \
     pip install -U pip && \
+    apt-get --purge autoremove && apt-get autoclean && apt-get clean && \
     ln -s /usr/local/nvidia/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu/libcuda.so && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
@@ -34,82 +34,57 @@ RUN \
     cd /root && \
     rm -rf /root/dev/downloads
 
-# # -- step 3: install libgpuarray
-# RUN \
-#     pip install cython==0.25 && \
-#     cd /root/dev && \
-#     git clone https://github.com/Theano/libgpuarray.git && \
-#     mkdir -p /root/dev/libgpuarray/release && \
-#     cd /root/dev/libgpuarray/release && \
-#     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
-#     make -j"$(nproc)" && make install && \
-#     cd /root/dev/libgpuarray && \
-#     python setup.py build_ext -L /usr/lib -I /usr/include && \
-#     python setup.py install
-
-# Install git, wget, python-dev, pip, BLAS + LAPACK and other dependencies
-RUN apt-get update && apt-get install -y \
-  gfortran \
-  git \
-  wget \
-  liblapack-dev \
-  libopenblas-dev \
-  python-dev \
-  python-pip \
-  python-nose \
-  python-numpy \
-  python-scipy
-
-RUN cd /root && wget http://www.cmake.org/files/v3.8/cmake-3.8.1.tar.gz && \
-    tar -xf cmake-3.8.1.tar.gz && cd cmake-3.8.1 && \
-    ./configure && make -j "$(nproc)" && make install
-
+# -- step 4: install python dependences
 RUN \
-    pip install cython==0.25 && \
-    cd /root && \
+    pip --no-cache-dir install \
+        setuptools==0.6rc11 \
+        distribute==0.6.38 \
+        cython==0.25 \
+        ipython==3.0.0 \
+        argparse \
+        SQLAlchemy \
+        sphinx \
+        nose \
+        nose-parameterized \
+        parameterized \
+        Pillow==2.4.0 \
+        pyzmq \
+        bson==0.4.1 \
+        pymongo \
+        networkx \
+        six \
+        coverage \
+        numpy==1.10 \
+        scipy==0.15.1 \
+        matplotlib==1.5.3 \
+        scikit-image==0.11.2 \
+        scikit-learn==0.16.1 \
+        pbr==1.8.0 \
+        cffi==1.7 \
+        cryptography==2.0.3 && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
+# -- step 3: install libgpuarray
+RUN \
+    cd /root/dev && \
     git clone https://github.com/Theano/libgpuarray.git && \
-    mkdir -p /root/libgpuarray/release && \
-    cd /root/libgpuarray/release && \
+    mkdir -p /root/dev/libgpuarray/release && \
+    cd /root/dev/libgpuarray/release && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
-    make -j"$(nproc)" && make install
-
-RUN \
-    cd /root/libgpuarray && \
+    make -j"$(nproc)" && make install && \
+    cd /root/dev/libgpuarray && \
     python setup.py build_ext -L /usr/lib -I /usr/include && \
     python setup.py install
 
-# -- step 4: install python dependences
-RUN \
-    pip install setuptools==0.6rc11 && \
-    pip install distribute==0.6.38 && \
-    pip install ipython==3.0.0 && \
-    pip install argparse && \
-    pip install SQLAlchemy && \
-    pip install sphinx && \
-    pip install nose && \
-    pip install nose-parameterized && \
-    pip install parameterized && \
-    pip install Pillow==2.4.0 && \
-    pip install pyzmq && \
-    pip install bson==0.4.1 && \
-    pip install pymongo && \
-    pip install networkx && \
-    pip install six && \
-    pip install coverage && \
-    pip install numpy==1.10 && \
-    pip install scipy==0.15.1 && \
-    pip install matplotlib==1.5.3 && \
-    pip install scikit-image==0.11.2 && \
-    pip install scikit-learn==0.16.1 && \
-    pip install pbr==1.8.0 && \
-    pip install theano==0.6.0 && \
-    pip install cffi==1.7 && \
-    pip install cryptography==2.0.3 && \
-    echo "[blas]\nldflags=-lopenblas\n" > /root/.theanorc && \
-    echo "[cuda]\nroot=/usr/local/cuda\n" >> /root/.theanorc && \
-    echo "[global]\nfloatX=float32\ndevice=cuda\n" >> /root/.theanorc && \
-    echo "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" >> /root/.theanorc && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
+# Install Theano and set up Theano config (.theanorc) for CUDA and OpenBLAS
+RUN pip --no-cache-dir install theano==0.6 && \
+    echo "[global]\ndevice=gpu\nfloatX=float32\noptimizer_including=cudnn\nmode=FAST_RUN \
+        \n[lib]\ncnmem=0.95 \
+        \n[nvcc]\nfastmath=True \
+        \n[blas]\nldflag = -L/usr/lib/openblas-base -lopenblas \
+        \n[DebugMode]\ncheck_finite=1" \
+    > /root/.theanorc
 
 # -- step 5: install hyperopt package
 RUN \
