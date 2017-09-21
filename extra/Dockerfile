@@ -34,8 +34,9 @@ RUN \
     cd /root && \
     rm -rf $HOME/dev/downloads
 
-# -- step 3: install mongodb
+# -- step 3: install libgpuarray
 RUN \
+    pip install cython==0.25 && \
     cd /root && git clone https://github.com/Theano/libgpuarray.git && cd libgpuarray && \
     mkdir Build && cd Build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
@@ -62,7 +63,6 @@ RUN \
     pip install networkx && \
     pip install six && \
     pip install coverage && \
-    pip install cython==0.25 && \
     pip install numpy==1.10 && \
     pip install scipy==0.15.1 && \
     pip install matplotlib==1.5.3 && \
