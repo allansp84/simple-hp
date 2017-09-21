@@ -36,9 +36,9 @@ RUN \
 
 # -- step 4: install python dependences
 RUN \
+    pip --no-cache-dir install setuptools==0.6rc11 && \
+    pip --no-cache-dir install  distribute==0.6.38 && \
     pip --no-cache-dir install \
-        setuptools==0.6rc11 \
-        distribute==0.6.38 \
         cython==0.25 \
         ipython==3.0.0 \
         argparse \
