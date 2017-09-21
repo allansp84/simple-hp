@@ -73,10 +73,10 @@ RUN \
     pip install cffi==1.7 && \
     pip install cryptography==2.0.3 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache && \
-    echo "[blas]\nldflags = -lopenblas\n" \
-        "[cuda]\nroot=/usr/local/cuda\n" \
-        "[global]\nfloatX=float32\ndevice=cpu\n" \
-        "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" > .theanorc
+    echo "[blas]\nldflags=-lopenblas\n" > .theanorc && \
+    echo "[cuda]\nroot=/usr/local/cuda\n" > .theanorc && \
+    echo "[global]\nfloatX=float32\ndevice=cpu\n" > .theanorc && \
+    echo "[lib]\ncnmem=0.1\n[nvcc]\nfastmath=True" >> .theanorc
 
 # -- step 5: install hyperopt package
 RUN \
