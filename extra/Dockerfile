@@ -4,7 +4,7 @@ MAINTAINER Allan Pinto <allansp84@gmail.com>
 ENV DISPLAY="localhost:0" \
     MPLBACKEND="agg" \
     CUDA_ROOT=/usr/local/cuda/bin \
-    PATH=$PATH:/root/dev/mongodb-2.2.7/bin
+    PATH=$PATH:/root/dev-pkgs/mongodb-2.2.7/bin
 
 # -- step 1: install dependences
 RUN \
@@ -28,13 +28,13 @@ RUN \
 
 # -- step 2: install mongodb
 RUN \
-    mkdir -p /root/dev/downloads && \
-    cd /root/dev/downloads && \
+    mkdir -p /root/dev-pkgs/downloads && \
+    cd /root/dev-pkgs/downloads && \
     wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.2.7.tgz && \
     tar -zxvf mongodb-linux-x86_64-2.2.7.tgz  && \
-    cp -R -n mongodb-linux-x86_64-2.2.7/ /root/dev/mongodb-2.2.7  && \
+    cp -R -n mongodb-linux-x86_64-2.2.7/ /root/dev-pkgs/mongodb-2.2.7  && \
     cd /root && \
-    rm -rf /root/dev/downloads
+    rm -rf /root/dev-pkgs/downloads
 
 # -- step 4: install python dependences
 RUN \
@@ -67,13 +67,13 @@ RUN \
 
 # -- step 3: install libgpuarray
 RUN \
-    cd /root/dev && \
+    cd /root/dev-pkgs && \
     git clone https://github.com/Theano/libgpuarray.git && \
-    mkdir -p /root/dev/libgpuarray/release && \
-    cd /root/dev/libgpuarray/release && \
+    mkdir -p /root/dev-pkgs/libgpuarray/release && \
+    cd /root/dev-pkgs/libgpuarray/release && \
     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
     make -j"$(nproc)" && make install && \
-    cd /root/dev/libgpuarray && \
+    cd /root/dev-pkgs/libgpuarray && \
     python setup.py build_ext -L /usr/lib -I /usr/include && \
     python setup.py install
 
@@ -89,29 +89,29 @@ RUN pip --no-cache-dir install theano==0.6 && \
 
 # -- step 5: install hyperopt package
 RUN \
-    mkdir -p $HOME/dev/hp-pkgs && \
-    cd $HOME/dev/hp-pkgs && \
+    mkdir -p /root/dev-pkgs && \
+    cd /root/dev-pkgs && \
     git clone https://github.com/hyperopt/hyperopt.git && \
     (cd hyperopt && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 5: install pyautodiff package
 RUN \
-    cd $HOME/dev/hp-pkgs && \
+    cd /root/dev-pkgs && \
     git clone https://github.com/jaberg/pyautodiff.git && \
     (cd pyautodiff && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 6: install hyperopt-convnet package
 RUN \
-    cd $HOME/dev/hp-pkgs && \
+    cd /root/dev-pkgs && \
     git clone https://github.com/allansp84/hyperopt-convnet.git && \
     (cd hyperopt-convnet && python setup.py develop) && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # -- step 7: install simple-hp package
 RUN \
-    cd $HOME/dev && \
+    cd /root && \
     git clone https://github.com/allansp84/simple-hp.git && \
     (cd simple-hp && python setup.py develop)
 
