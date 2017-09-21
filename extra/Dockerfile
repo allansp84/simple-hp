@@ -45,8 +45,7 @@ RUN \
     make -j"$(nproc)" && make install && \
     cd /root/dev/libgpuarray && \
     python setup.py build_ext -L /usr/lib -I /usr/include && \
-    python setup.py install && \
-    rm -rf /root/dev/libgpuarray
+    python setup.py install
 
 # -- step 4: install python dependences
 RUN \
